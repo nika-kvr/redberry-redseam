@@ -1,0 +1,56 @@
+h1 {
+  margin-bottom: 46px;
+}
+.main_login {
+  display: flex;
+}
+.main_login > div {
+  flex: 1;
+}
+
+.login_png {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+.auth_div {
+  display: flex;
+  align-items: center;
+  padding-left: 173px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 554px;
+}
+
+form > .button {
+  width: 580px;
+}
+
+.txt_input {
+  all: unset;
+  position: relative;
+  font-size: 20px;
+  padding: 10.5px 12px;
+  font-family: "MyFont-regular";
+  color: #3e424a;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #e1dfe1;
+}
+
+#pass_div {
+  position: relative;
+}
+.input_div > img {
+  position: absolute;
+  width: 35px;
+  top: 15px;
+  right: 0;
+  cursor: pointer;
+}
+.input_div > input {
+  width: 100%;
+}

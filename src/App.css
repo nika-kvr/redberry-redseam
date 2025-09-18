@@ -1,0 +1,60 @@
+@font-face {
+  font-family: "MyFont-regular";
+  src: url("assets/css/fonts/Poppins-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "MyFont-semi-bold";
+  src: url("assets/css/fonts/Poppins-SemiBold.ttf") format("truetype");
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "MyFont-semi-bold";
+}
+
+p,
+span {
+  font-family: "MyFont-regular";
+}
+
+h1 {
+  font-size: 40px;
+}
+
+.button {
+  font-family: "MyFont-regular";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background-color: #ff4000;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+img {
+  object-fit: cover;
+}

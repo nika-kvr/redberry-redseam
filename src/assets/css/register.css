@@ -1,0 +1,30 @@
+.beforeUpldImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  border: 2px solid #e1dfe1;
+}
+.beforeUpload {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+}
+.cameraSvg {
+  width: 20px;
+}
+.afterUpload {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+.imgPreview {
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+}
