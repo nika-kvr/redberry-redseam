@@ -33,6 +33,7 @@ h6 {
 
 p,
 span {
+  font-size: 20px;
   font-family: "MyFont-regular";
 }
 
@@ -57,4 +58,9 @@ h1 {
 }
 img {
   object-fit: cover;
+}
+
+span {
+  color: #3e424a;
+  font-size: 18px;
 }

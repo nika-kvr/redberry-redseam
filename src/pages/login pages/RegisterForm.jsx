@@ -4,7 +4,7 @@ import cameraSvg from "../../assets/images/camera.png";
 
 import "../../assets/css/register.css";
 
-export default function RegisterForm() {
+export default function RegisterForm({ onSwitch }) {
   const [showPass, setShowPass] = useState(false);
   const [showPassConf, setShowPassConf] = useState(false);
 
@@ -82,6 +82,15 @@ export default function RegisterForm() {
           </div>
           <div style={{ marginTop: "22px" }} className="button">
             Register
+          </div>
+          <div className="login_span_div">
+            <span>Already member?</span>
+            <span
+              onClick={onSwitch}
+              style={{ color: "#FF4000", cursor: "pointer" }}
+            >
+              Log in
+            </span>
           </div>
         </form>
       </div>

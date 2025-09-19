@@ -54,3 +54,8 @@ form > .button {
 .input_div > input {
   width: 100%;
 }
+.login_span_div {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
