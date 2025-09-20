@@ -1,0 +1,39 @@
+.products_main {
+  height: 100%;
+  padding: 72px 100px 216px 100px;
+}
+.products_header {
+  display: flex;
+  justify-content: space-between;
+}
+.pag_btn {
+  font-family: "MyFont-regular";
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7a8086;
+  border: 2px solid #f8f6f7;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.pag_active {
+  color: #ff4000;
+  border: 2px solid #ff4000;
+}
+
+.pag_div {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.pag_arrow {
+  margin: 0 5px;
+  width: 10px;
+  background-image: url("../images/left-arrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}

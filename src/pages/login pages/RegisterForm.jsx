@@ -77,7 +77,7 @@ export default function RegisterForm({ onSwitch }) {
   return (
     <>
       <div className="auth_card">
-        <h1>Registration</h1>
+        <h1 className="auth_h">Registration</h1>
         <form>
           <input
             type="file"

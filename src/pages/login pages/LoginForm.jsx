@@ -40,7 +40,7 @@ export default function LoginForm({ onSwitch }) {
   return (
     <>
       <div className="auth_card">
-        <h1>Log in</h1>
+        <h1 className="auth_h">Log in</h1>
         <form>
           <div className="input_div">
             <input
