@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Products from "./pages/Products";
+import ProductsDetail from "./pages/ProductDetail";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -26,6 +27,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/products/:id" element={<ProductsDetail />} />
         <Route path="*" element={<Navigate to="/products" />} />
       </Routes>
     </Router>
