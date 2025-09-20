@@ -59,7 +59,7 @@ export default function LoginForm({ onSwitch }) {
             />
             <img onClick={() => setShowPass(!showPass)} src={passSvg} />
           </div>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <span style={{ color: "red" }}>{error}</span>}
           <div
             style={{ marginTop: "22px" }}
             className="button"

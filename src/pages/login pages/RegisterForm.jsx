@@ -8,8 +8,13 @@ export default function RegisterForm({ onSwitch }) {
   const [showPass, setShowPass] = useState(false);
   const [showPassConf, setShowPassConf] = useState(false);
 
-  const [image, setImage] = useState(null);
   const inputRef = useRef(null);
+  const [image, setImage] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [passwordConf, setPasswordconf] = useState(null);
+  const [error, setError] = useState([]);
 
   const handleButtonClick = () => {
     inputRef.current.click();
@@ -18,12 +23,55 @@ export default function RegisterForm({ onSwitch }) {
   const handleUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      file.preview = URL.createObjectURL(file);
+      setImage(file);
     }
   };
   const handleDelete = () => {
     setImage(null);
     inputRef.current.value = null;
+  };
+
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("password_confirmation", passwordConf);
+      if (image) {
+        formData.append("avatar", image);
+      }
+
+      const res = await fetch(`${apiUrl}/register`, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const allErrors = Object.values(data.errors).flat();
+          setError(allErrors);
+        } else if (data.message) {
+          setError([data.message]);
+        }
+        return;
+      }
+
+      console.log("Logged in:", data.user);
+    } catch (err) {
+      setError([err.message]);
+    }
   };
 
   return (
@@ -48,7 +96,7 @@ export default function RegisterForm({ onSwitch }) {
               </div>
             ) : (
               <div className="afterUpload">
-                <img className="imgPreview" src={image} />
+                <img className="imgPreview" src={image.preview} />
                 <p onClick={handleButtonClick} style={{ cursor: "pointer" }}>
                   Upload new
                 </p>
@@ -59,13 +107,24 @@ export default function RegisterForm({ onSwitch }) {
             )}
           </div>
           <div className="input_div">
-            <input className="txt_input" type="text" placeholder="Username *" />
+            <input
+              onChange={(e) => setUsername(e.target.value)}
+              className="txt_input"
+              type="text"
+              placeholder="Username *"
+            />
           </div>
           <div className="input_div">
-            <input className="txt_input" type="text" placeholder="Email *" />
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              className="txt_input"
+              type="text"
+              placeholder="Email *"
+            />
           </div>
           <div className="input_div" id="pass_div">
             <input
+              onChange={(e) => setPassword(e.target.value)}
               className="txt_input"
               type={showPass ? "text" : "password"}
               placeholder="Password *"
@@ -74,13 +133,24 @@ export default function RegisterForm({ onSwitch }) {
           </div>
           <div className="input_div" id="pass_div">
             <input
+              onChange={(e) => setPasswordconf(e.target.value)}
               className="txt_input"
               type={showPassConf ? "text" : "password"}
               placeholder="Confirm password *"
             />
             <img onClick={() => setShowPassConf(!showPassConf)} src={passSvg} />
           </div>
-          <div style={{ marginTop: "22px" }} className="button">
+          {error.length > 0 &&
+            error.map((err, index) => (
+              <span key={index} style={{ color: "red" }}>
+                {err}
+              </span>
+            ))}
+          <div
+            onClick={handleSubmit}
+            style={{ marginTop: "22px" }}
+            className="button"
+          >
             Register
           </div>
           <div className="login_span_div">
