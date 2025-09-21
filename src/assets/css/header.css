@@ -4,11 +4,15 @@
   height: 80px;
   padding: 30px 100px;
   justify-content: space-between;
-  overflow: hidden;
 }
 .header_main > div {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+.user_img {
+  width: 40px;
+  border-radius: 100px;
+  margin-left: 20px;
 }

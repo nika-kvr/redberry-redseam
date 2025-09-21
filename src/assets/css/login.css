@@ -59,3 +59,13 @@ form > .button {
   justify-content: center;
   gap: 8px;
 }
+.input_div {
+  position: relative;
+}
+
+.input_plc {
+  top: 17px;
+  left: 14px;
+  position: absolute;
+  pointer-events: none;
+}

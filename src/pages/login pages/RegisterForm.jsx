@@ -1,10 +1,12 @@
 import passSvg from "../../assets/images/password.png";
 import { useRef, useState } from "react";
 import cameraSvg from "../../assets/images/camera.png";
-
 import "../../assets/css/register.css";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm({ onSwitch }) {
+  const navigate = useNavigate();
+
   const [showPass, setShowPass] = useState(false);
   const [showPassConf, setShowPassConf] = useState(false);
 
@@ -15,6 +17,11 @@ export default function RegisterForm({ onSwitch }) {
   const [password, setPassword] = useState(null);
   const [passwordConf, setPasswordconf] = useState(null);
   const [error, setError] = useState([]);
+
+  const [emailPlc, setEmailplc] = useState(true);
+  const [usernamePlc, setUsernameplc] = useState(true);
+  const [passPlc, setPassplc] = useState(true);
+  const [passConfplc, setPassConfplc] = useState(true);
 
   const handleButtonClick = () => {
     inputRef.current.click();
@@ -68,6 +75,9 @@ export default function RegisterForm({ onSwitch }) {
         return;
       }
 
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/products");
       console.log("Logged in:", data.user);
     } catch (err) {
       setError([err.message]);
@@ -108,36 +118,88 @@ export default function RegisterForm({ onSwitch }) {
           </div>
           <div className="input_div">
             <input
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                if (e.target.value.length !== 0) {
+                  setUsernameplc(false);
+                } else {
+                  setUsernameplc(true);
+                }
+              }}
               className="txt_input"
               type="text"
-              placeholder="Username *"
             />
+            {usernamePlc && (
+              <div className="input_plc">
+                <p style={{ color: "#3e424a" }}>
+                  Username <span style={{ color: "#FF4000" }}>*</span>
+                </p>
+              </div>
+            )}
           </div>
           <div className="input_div">
             <input
-              onChange={(e) => setEmail(e.target.value)}
               className="txt_input"
               type="text"
-              placeholder="Email *"
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (e.target.value.length !== 0) {
+                  setEmailplc(false);
+                } else {
+                  setEmailplc(true);
+                }
+              }}
             />
+            {emailPlc && (
+              <div className="input_plc">
+                <p style={{ color: "#3e424a" }}>
+                  Email <span style={{ color: "#FF4000" }}>*</span>
+                </p>
+              </div>
+            )}
           </div>
           <div className="input_div" id="pass_div">
             <input
-              onChange={(e) => setPassword(e.target.value)}
               className="txt_input"
               type={showPass ? "text" : "password"}
-              placeholder="Password *"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (e.target.value.length !== 0) {
+                  setPassplc(false);
+                } else {
+                  setPassplc(true);
+                }
+              }}
             />
+            {passPlc && (
+              <div className="input_plc">
+                <p style={{ color: "#3e424a" }}>
+                  Password <span style={{ color: "#FF4000" }}>*</span>
+                </p>
+              </div>
+            )}
             <img onClick={() => setShowPass(!showPass)} src={passSvg} />
           </div>
           <div className="input_div" id="pass_div">
             <input
-              onChange={(e) => setPasswordconf(e.target.value)}
               className="txt_input"
               type={showPassConf ? "text" : "password"}
-              placeholder="Confirm password *"
+              onChange={(e) => {
+                setPasswordconf(e.target.value);
+                if (e.target.value.length !== 0) {
+                  setPassConfplc(false);
+                } else {
+                  setPassConfplc(true);
+                }
+              }}
             />
+            {passConfplc && (
+              <div className="input_plc">
+                <p style={{ color: "#3e424a" }}>
+                  Confirm password <span style={{ color: "#FF4000" }}>*</span>
+                </p>
+              </div>
+            )}
             <img onClick={() => setShowPassConf(!showPassConf)} src={passSvg} />
           </div>
           {error.length > 0 &&

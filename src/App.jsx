@@ -8,6 +8,7 @@ import {
 import Login from "./pages/Login";
 import Products from "./pages/Products";
 import ProductsDetail from "./pages/ProductDetail";
+import Checkout from "./pages/Checkout";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -20,14 +21,16 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
-          path="/products"
+          path="/checkout"
           element={
             <ProtectedRoute>
-              <Products />
+              <Checkout />
             </ProtectedRoute>
           }
         />
+
         <Route path="/products/:id" element={<ProductsDetail />} />
+        <Route path="/products" element={<Products />} />
         <Route path="*" element={<Navigate to="/products" />} />
       </Routes>
     </Router>

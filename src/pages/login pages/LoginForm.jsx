@@ -1,12 +1,18 @@
 import passSvg from "../../assets/images/password.png";
 import { use, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm({ onSwitch }) {
+  const navigate = useNavigate();
+
   const [showPass, setShowPass] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const [emailPlc, setEmailplc] = useState(true);
+  const [passPlc, setPassplc] = useState(true);
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -31,6 +37,7 @@ export default function LoginForm({ onSwitch }) {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      navigate("/products");
       console.log("Logged in:", data.user);
     } catch (err) {
       setError(err.message);
@@ -46,17 +53,43 @@ export default function LoginForm({ onSwitch }) {
             <input
               className="txt_input"
               type="text"
-              placeholder="Email or username *"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (e.target.value.length !== 0) {
+                  setEmailplc(false);
+                } else {
+                  setEmailplc(true);
+                }
+              }}
             />
+            {emailPlc && (
+              <div className="input_plc">
+                <p style={{ color: "#3e424a" }}>
+                  Email or username <span style={{ color: "#FF4000" }}>*</span>
+                </p>
+              </div>
+            )}
           </div>
           <div className="input_div" id="pass_div">
             <input
               className="txt_input"
               type={showPass ? "text" : "password"}
-              placeholder="Password *"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (e.target.value.length !== 0) {
+                  setPassplc(false);
+                } else {
+                  setPassplc(true);
+                }
+              }}
             />
+            {passPlc && (
+              <div className="input_plc">
+                <p style={{ color: "#3e424a" }}>
+                  Password <span style={{ color: "#FF4000" }}>*</span>
+                </p>
+              </div>
+            )}
             <img onClick={() => setShowPass(!showPass)} src={passSvg} />
           </div>
           {error && <span style={{ color: "red" }}>{error}</span>}
