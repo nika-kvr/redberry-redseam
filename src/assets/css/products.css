@@ -148,3 +148,18 @@ input[type="number"]::-webkit-outer-spin-button {
   cursor: pointer;
   text-decoration: none;
 }
+.sort_div {
+  position: relative;
+}
+.sort_card {
+  width: 223px;
+  height: 184px;
+  cursor: default;
+}
+.sort_card > p {
+  margin-top: 8px;
+  cursor: pointer;
+}
+.sort_card > h3 {
+  margin-bottom: 15px;
+}

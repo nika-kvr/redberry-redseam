@@ -1,6 +1,6 @@
 import Header from "./Header";
 import "../assets/css/products.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import filterPng from "../assets/images/filter.png";
 import ReactPaginate from "react-paginate";
@@ -18,9 +18,31 @@ export default function Products() {
   const [fromPgn, setFromPgn] = useState(1);
   const [toPgn, setToPgn] = useState(10);
   const [fltrErr, setFltrErr] = useState(false);
+
   const [showFltr, setShowFltr] = useState(false);
   const [fromFltr, setFromFltr] = useState("");
   const [toFltr, setToFltr] = useState("");
+
+  const [showSort, setShowSort] = useState(false);
+
+  const fltrRef = useRef(null);
+  const sortRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (fltrRef.current && !fltrRef.current.contains(event.target)) {
+        setShowFltr(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setShowSort(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -64,6 +86,7 @@ export default function Products() {
             <span>{`showing ${fromPgn} -${toPgn} of ${prodsQnty} results `}</span>
             <span>|</span>
             <div
+              ref={fltrRef}
               className="filter_div"
               onClick={() => {
                 setShowFltr(!showFltr);
@@ -111,6 +134,7 @@ export default function Products() {
                           setShowFltr(false);
                           setFltrErr(false);
                           setPage(1);
+                          fetchData();
                         } else {
                           setFltrErr(true);
                         }
@@ -122,12 +146,30 @@ export default function Products() {
                 </div>
               )}
             </div>
-            <div>
+            <div
+              ref={sortRef}
+              className="sort_div"
+              onClick={() => {
+                setShowSort(!showSort);
+                setShowFltr(false);
+              }}
+            >
               <p>Sort by</p>
               <div
                 className="dropdown_img"
                 style={{ transform: "rotate(-90deg)" }}
               ></div>
+              {showSort && (
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="filter_card sort_card"
+                >
+                  <h3>Sorty by</h3>
+                  <p>New products first</p>
+                  <p>Price, low to high</p>
+                  <p>Price, high to low</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
