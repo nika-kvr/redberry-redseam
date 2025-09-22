@@ -3,6 +3,7 @@ import "../assets/css/products.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import filterPng from "../assets/images/filter.png";
+import ReactPaginate from "react-paginate";
 
 export default function Products() {
   const navigate = useNavigate();
@@ -21,14 +22,6 @@ export default function Products() {
   const [fromFltr, setFromFltr] = useState("");
   const [toFltr, setToFltr] = useState("");
 
-  const handleBtnChange = () => {
-    if (page < 8) {
-      setPagArray([page, page + 1]);
-    } else {
-      setPagArray([7, 8]);
-    }
-  };
-
   const fetchData = async () => {
     try {
       let url = `${apiUrl}/products?page=${page}&filter[price_from]=${fromFltr}`;
@@ -39,7 +32,6 @@ export default function Products() {
       const res = await fetch(url);
       const data = await res.json();
 
-      console.log(data.data.length);
       if (data.data.length == 0) {
         setFromFltr("");
         setToFltr("");
@@ -58,7 +50,6 @@ export default function Products() {
   };
   useEffect(() => {
     fetchData();
-    handleBtnChange();
   }, [page]);
 
   return (
@@ -120,7 +111,6 @@ export default function Products() {
                           setShowFltr(false);
                           setFltrErr(false);
                           setPage(1);
-                          fetchData();
                         } else {
                           setFltrErr(true);
                         }
@@ -155,33 +145,20 @@ export default function Products() {
           ))}
         </div>
         <div className="pag_div">
-          <div
-            onClick={() => {
-              if (page > 1) {
-                setPage(page - 1);
-              }
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            previousLabel="<"
+            pageCount={totalPages}
+            pageRangeDisplayed={2}
+            onPageChange={(e) => {
+              setPage(e.selected + 1);
             }}
-            className="pag_arrow"
-          ></div>
-
-          {[...Array(totalPages)].map((_, index) => (
-            <div
-              key={index}
-              className={`pag_btn ${index + 1 === page && "pag_active"}`}
-              onClick={() => setPage(index + 1)}
-            >
-              {index + 1}
-            </div>
-          ))}
-          <div
-            onClick={() => {
-              if (page < totalPages) {
-                setPage(page + 1);
-              }
-            }}
-            style={{ transform: "rotate(180deg)" }}
-            className="pag_arrow"
-          ></div>
+            forcePage={page - 1}
+            containerClassName="pagination"
+            activeClassName="pag_active"
+            marginPagesDisplayed={2}
+          />
         </div>
       </div>
     </>

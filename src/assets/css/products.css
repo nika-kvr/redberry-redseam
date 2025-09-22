@@ -112,3 +112,39 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   justify-content: flex-end;
 }
+.pagination {
+  display: flex;
+  gap: 10px;
+}
+.pagination > li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: "MyFont-regular";
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7a8086;
+  border: 2px solid #f8f6f7;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+.pagination li a {
+  width: 100%;
+  text-align: center;
+}
+.pagination li.pag_active {
+  color: #ff4000;
+  border: 2px solid #ff4000;
+}
+.pagination li.previous,
+.pagination li.next {
+  border: none;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
