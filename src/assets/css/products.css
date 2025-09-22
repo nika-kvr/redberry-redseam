@@ -56,6 +56,8 @@
 .product_card > img {
   width: 412px;
   border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: 12px;
 }
 .filter_main {
   display: flex;
@@ -67,4 +69,46 @@
   gap: 8px;
   align-items: center;
   cursor: pointer;
+}
+.filter_div {
+  position: relative;
+}
+
+.filter_card {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 392px;
+  height: 169px;
+  border: 1px solid #e1dfe1;
+  border-radius: 10px;
+  cursor: auto;
+  padding: 16px;
+  background-color: #ffff;
+}
+.filter_input {
+  box-sizing: border-box;
+  width: 175px;
+  height: 42px;
+  margin-top: 15px;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.filter_inpt_div {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.filter_btn {
+  height: 41px;
+  width: 124px;
+  margin-top: 10px;
+}
+.filter_btn_div {
+  display: flex;
+  justify-content: flex-end;
 }

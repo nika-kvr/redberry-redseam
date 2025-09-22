@@ -38,7 +38,6 @@ export default function LoginForm({ onSwitch }) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/products");
-      console.log("Logged in:", data.user);
     } catch (err) {
       setError(err.message);
     }
