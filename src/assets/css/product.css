@@ -11,6 +11,7 @@
   margin-right: 24px;
 }
 .imgs_div > img {
+  border-radius: 10px;
   width: 100%;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -85,6 +86,7 @@
   border: 2px solid #e1dfe1;
   border-radius: 10px;
   overflow-y: auto;
+  background-color: #fff;
   top: 45px;
 }
 .dropdown_cont {
@@ -106,4 +108,36 @@
 }
 .prod_size:hover {
   background-color: #f8f6f7;
+}
+.inactive {
+  cursor: default;
+}
+.cart_btn {
+  margin: 56px 0;
+  padding: 16px;
+  display: flex;
+  gap: 10px;
+}
+.cart_btn > img {
+  width: 24px;
+  height: 24px;
+}
+
+.line {
+  height: 2px;
+  background-color: #e1dfe1;
+  margin-bottom: 56px;
+}
+.details_p {
+  font-family: "MyFont-semi-bold";
+  font-size: 22px;
+  color: #10151f;
+}
+.details_div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.details_div > img {
+  height: 61px;
 }

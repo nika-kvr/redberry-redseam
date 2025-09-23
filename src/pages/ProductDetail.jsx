@@ -1,21 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./Header";
 import { useParams } from "react-router-dom";
 import "../assets/css/product.css";
 import { useNavigate } from "react-router-dom";
 import softenColor from "./components/Colors";
+import cartPng from "../assets/images/cart_logo.svg";
 
 export default function ProductsDetail() {
   const { id } = useParams();
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
   const [showDrop, setShowdrop] = useState(false);
 
   const [product, setProduct] = useState(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActivesize] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState("");
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowdrop(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +39,7 @@ export default function ProductsDetail() {
         const data = await res.json();
         setProduct(data);
         setActivesize(data.available_sizes[0]);
+        data.quantity ? setQuantity(1) : setQuantity(0);
         console.log(data);
       } catch (err) {
         navigate("/products");
@@ -64,7 +80,9 @@ export default function ProductsDetail() {
           <div className="prodDetial_div">
             <h1 style={{ marginBottom: "21px" }}>{product?.name}</h1>
             <h1 style={{ marginBottom: "56px" }}>$ {product?.price}</h1>
-            <p style={{ marginBottom: "16px" }}>Color: {product?.color}</p>
+            <p style={{ marginBottom: "16px" }}>
+              Color: {product?.available_colors[activeIndex]}
+            </p>
             <div style={{ marginBottom: "48px" }} className="colors_div">
               {product?.available_colors.map((color, index) => (
                 <div
@@ -93,19 +111,22 @@ export default function ProductsDetail() {
             </div>
             <p style={{ marginBottom: "16px" }}>Quantity</p>
             <div
+              ref={dropdownRef}
               onClick={(e) => {
                 e.stopPropagation();
                 setShowdrop(!showDrop);
               }}
-              className="qnty_div"
+              className={`qnty_div ${!quantity && "inactive"}`}
               style={{ padding: "7px 0", position: "relative" }}
             >
               <p>{quantity}</p>
-              <div
-                style={{ transform: "rotate(-90deg)" }}
-                className="dropdown_img"
-              ></div>
-              {showDrop && (
+              {quantity > 0 && (
+                <div
+                  style={{ transform: "rotate(-90deg)" }}
+                  className="dropdown_img"
+                ></div>
+              )}
+              {showDrop && quantity > 0 && (
                 <div
                   className="dropdown"
                   onClick={(e) => {
@@ -126,6 +147,28 @@ export default function ProductsDetail() {
                   ))}
                 </div>
               )}
+            </div>
+
+            {quantity > 0 ? (
+              <div>
+                <div className="button cart_btn">
+                  <img src={cartPng} />
+                  Add to cart
+                </div>
+              </div>
+            ) : (
+              <div className="cart_btn">
+                <h1>Out of stock</h1>
+              </div>
+            )}
+            <div className="line"></div>
+            <div>
+              <div className="details_div">
+                <p className="details_p">Details</p>
+                <img src={product?.brand.image} />
+              </div>
+              <p style={{ marginTop: "7px" }}>Brand: {product?.brand.name}</p>
+              <p style={{ marginTop: "19px" }}>{product?.description}</p>
             </div>
           </div>
         </div>
