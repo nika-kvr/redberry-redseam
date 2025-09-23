@@ -133,8 +133,12 @@ input[type="number"]::-webkit-outer-spin-button {
   user-select: none;
 }
 .pagination li a {
+  height: 100%;
   width: 100%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 .pagination li.pag_active {
   color: #ff4000;
@@ -162,4 +166,22 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .sort_card > h3 {
   margin-bottom: 15px;
+}
+.filter_pop_div {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 19px;
+  max-width: fit-content;
+  border: 2px solid #e1dfe1;
+  border-radius: 30px;
+  padding: 8px 10px 8px 16px;
+}
+.filter_pop_div > p {
+  font-size: 16px;
+}
+.filter_pop_div > img {
+  width: 10px;
+  height: 10px;
 }

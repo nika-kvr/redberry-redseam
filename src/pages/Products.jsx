@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import filterPng from "../assets/images/filter.png";
 import ReactPaginate from "react-paginate";
+import closePng from "../assets/images/close.png";
 
 export default function Products() {
   const navigate = useNavigate();
@@ -12,7 +13,6 @@ export default function Products() {
 
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const [pagArray, setPagArray] = useState([]);
   const [prodsQnty, setProdsQnty] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [fromPgn, setFromPgn] = useState(1);
@@ -24,6 +24,11 @@ export default function Products() {
   const [toFltr, setToFltr] = useState("");
 
   const [showSort, setShowSort] = useState(false);
+  const [showFltrPop, setShowFltrPop] = useState(false);
+  const [fltrPopFrom, setFltrPopFrom] = useState(0);
+  const [fltrPopTo, setFltrPopTo] = useState(0);
+  const [sortProd, setSortProd] = useState("");
+  const [sortTxt, setSortTxt] = useState("Sort by");
 
   const fltrRef = useRef(null);
   const sortRef = useRef(null);
@@ -44,17 +49,32 @@ export default function Products() {
     };
   }, []);
 
-  const fetchData = async () => {
-    try {
-      let url = `${apiUrl}/products?page=${page}&filter[price_from]=${fromFltr}`;
+  const handleSort = (sort, e) => {
+    setSortTxt(e.target.innerText);
+    setPage(1);
+    setSortProd(sort);
+    setShowSort(false);
+  };
 
-      if (toFltr) {
-        url += `&filter[price_to]=${toFltr}`;
+  const fetchData = async (customFrom = fromFltr, customTo = toFltr) => {
+    try {
+      let url = `${apiUrl}/products?page=${page}`;
+
+      if (customFrom) {
+        url += `&filter[price_from]=${customFrom}`;
       }
+      if (customTo) {
+        url += `&filter[price_to]=${customTo}`;
+      }
+
+      if (sortProd) {
+        url += `&sort=${sortProd}`;
+      }
+
       const res = await fetch(url);
       const data = await res.json();
 
-      if (data.data.length == 0) {
+      if (data.data.length === 0) {
         setFromFltr("");
         setToFltr("");
         setPage(1);
@@ -70,9 +90,10 @@ export default function Products() {
       console.log(err);
     }
   };
+
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [page, sortProd]);
 
   return (
     <>
@@ -130,14 +151,27 @@ export default function Products() {
                     <div
                       className="button filter_btn"
                       onClick={() => {
-                        if (fromFltr <= toFltr || !toFltr) {
-                          setShowFltr(false);
-                          setFltrErr(false);
-                          setPage(1);
-                          fetchData();
-                        } else {
+                        const isFromEmpty = !fromFltr || fromFltr === 0;
+                        const isToEmpty = !toFltr || toFltr === 0;
+
+                        if (isFromEmpty && isToEmpty) {
                           setFltrErr(true);
+                          return;
                         }
+
+                        if (!isFromEmpty && !isToEmpty && fromFltr > toFltr) {
+                          setFltrErr(true);
+                          return;
+                        }
+
+                        setShowFltr(false);
+                        setFltrErr(false);
+                        setShowFltrPop(true);
+                        setFltrPopFrom(fromFltr);
+                        setFltrPopTo(toFltr);
+                        if (!fromFltr) setFltrPopFrom(0);
+                        setPage(1);
+                        fetchData();
                       }}
                     >
                       Apply
@@ -154,7 +188,7 @@ export default function Products() {
                 setShowFltr(false);
               }}
             >
-              <p>Sort by</p>
+              <p>{sortTxt}</p>
               <div
                 className="dropdown_img"
                 style={{ transform: "rotate(-90deg)" }}
@@ -165,14 +199,37 @@ export default function Products() {
                   className="filter_card sort_card"
                 >
                   <h3>Sorty by</h3>
-                  <p>New products first</p>
-                  <p>Price, low to high</p>
-                  <p>Price, high to low</p>
+                  <p onClick={(e) => handleSort("created_at", e)}>
+                    New products first
+                  </p>
+                  <p onClick={(e) => handleSort("price", e)}>
+                    Price, low to high
+                  </p>
+                  <p onClick={(e) => handleSort("-price", e)}>
+                    Price, high to low
+                  </p>
                 </div>
               )}
             </div>
           </div>
         </div>
+        {showFltrPop && (
+          <div
+            onClick={() => {
+              setFromFltr("");
+              setToFltr("");
+              setShowFltrPop(false);
+
+              fetchData("", "");
+            }}
+            className="filter_pop_div"
+          >
+            <p>
+              Price: {fltrPopFrom}-{fltrPopTo}
+            </p>
+            <img src={closePng} />
+          </div>
+        )}
         <div className="products_div">
           {products.map((p) => (
             <div
