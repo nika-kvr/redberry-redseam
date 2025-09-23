@@ -75,14 +75,7 @@ export default function Products() {
       const data = await res.json();
 
       if (data.data.length === 0) {
-        setFromFltr("");
-        setToFltr("");
-        setPage(1);
-        setShowFltr(false);
-        setShowFltrPop(false);
-        setFltrPopFrom("");
-        setFltrPopTo("");
-        return;
+        return false;
       }
 
       setProducts(data.data);
@@ -90,6 +83,7 @@ export default function Products() {
       setProdsQnty(data.meta.total);
       setFromPgn((page - 1) * 10 + 1);
       setToPgn(data.meta.to);
+      return true;
     } catch (err) {
       console.log(err);
     }
@@ -168,14 +162,23 @@ export default function Products() {
                           return;
                         }
 
-                        setShowFltr(false);
-                        setFltrErr(false);
-                        setShowFltrPop(true);
-                        setFltrPopFrom(fromFltr);
-                        setFltrPopTo(toFltr);
-                        if (!fromFltr) setFltrPopFrom(0);
-                        setPage(1);
-                        fetchData();
+                        fetchData()
+                          .then((res) => {
+                            if (!res) {
+                              setFltrErr(true);
+                            } else {
+                              setPage(1);
+                              setShowFltr(false);
+                              setFltrErr(false);
+                              setShowFltrPop(true);
+                              setFltrPopFrom(fromFltr);
+                              if (!fromFltr) setFltrPopFrom(0);
+                              setFltrPopTo(toFltr);
+                            }
+                          })
+                          .catch((err) => {
+                            console.log("failed", err);
+                          });
                       }}
                     >
                       Apply
