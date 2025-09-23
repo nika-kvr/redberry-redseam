@@ -78,6 +78,10 @@ export default function Products() {
         setFromFltr("");
         setToFltr("");
         setPage(1);
+        setShowFltr(false);
+        setShowFltrPop(false);
+        setFltrPopFrom("");
+        setFltrPopTo("");
         return;
       }
 
@@ -219,6 +223,7 @@ export default function Products() {
               setFromFltr("");
               setToFltr("");
               setShowFltrPop(false);
+              setFltrErr(false);
 
               fetchData("", "");
             }}

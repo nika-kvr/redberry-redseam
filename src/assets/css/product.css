@@ -13,6 +13,7 @@
 .imgs_div > img {
   width: 100%;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 .image_div {
   width: 703px;
@@ -20,6 +21,8 @@
 }
 .image_div > img {
   width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 .prodDetial_div {
   width: 704px;
