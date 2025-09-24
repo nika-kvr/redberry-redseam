@@ -55,9 +55,13 @@ export default function Products() {
     setShowSort(false);
   };
 
-  const fetchData = async (customFrom = fromFltr, customTo = toFltr) => {
+  const fetchData = async (
+    customFrom = fromFltr,
+    customTo = toFltr,
+    customPage = page
+  ) => {
     try {
-      let url = `${apiUrl}/products?page=${page}`;
+      let url = `${apiUrl}/products?page=${customPage}`;
 
       if (customFrom) {
         url += `&filter[price_from]=${customFrom}`;
@@ -160,7 +164,7 @@ export default function Products() {
                           return;
                         }
 
-                        fetchData()
+                        fetchData(undefined, undefined, 1)
                           .then((res) => {
                             if (!res) {
                               setFltrErr(true);

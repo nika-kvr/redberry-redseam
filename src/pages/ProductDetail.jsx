@@ -80,6 +80,7 @@ export default function ProductsDetail() {
         }),
       });
 
+      window.dispatchEvent(new Event("cartUpdated"));
       const data = await response.json();
       console.log("Response:", data);
     } catch (error) {
