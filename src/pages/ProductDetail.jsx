@@ -44,6 +44,7 @@ export default function ProductsDetail() {
         data.quantity ? setQuantity(1) : setQuantity(0);
         console.log(data);
       } catch (err) {
+        console.log("eroria");
         navigate("/products");
         console.log(err);
       }
@@ -60,6 +61,7 @@ export default function ProductsDetail() {
 
   const handleAddToCart = async () => {
     if (!user) {
+      console.log("user not found");
       navigate("/login");
       return;
     }

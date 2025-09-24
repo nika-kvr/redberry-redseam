@@ -16,7 +16,7 @@ export default function Header() {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [cart, setCart] = useState([]);
 
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const [itemsPrice, setItemsPrice] = useState(0);
 
@@ -187,7 +187,15 @@ export default function Header() {
                       <h2>$ {itemsPrice + 5}</h2>
                     </div>
                   </div>
-                  <div className="button">Go to checkout</div>
+                  <div
+                    onClick={() => {
+                      setShowSidebar(false);
+                      navigate("/checkout");
+                    }}
+                    className="button"
+                  >
+                    Go to checkout
+                  </div>
                 </div>
               </div>
             ) : (
