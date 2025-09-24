@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import Header from "./Header";
 import { useParams } from "react-router-dom";
 import "../assets/css/product.css";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +6,9 @@ import softenColor from "./components/Colors";
 import cartPng from "../assets/images/cart_logo.svg";
 
 export default function ProductsDetail() {
+  const userString = localStorage.getItem("user");
+  const userToken = localStorage.getItem("token");
+  const user = userString ? JSON.parse(userString) : null;
   const { id } = useParams();
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -56,9 +58,37 @@ export default function ProductsDetail() {
     }
   };
 
+  const handleAddToCart = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    const color = product.available_colors[activeIndex];
+    const size = activeSize;
+
+    try {
+      const response = await fetch(`${apiUrl}/cart/products/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken} `,
+        },
+        body: JSON.stringify({
+          quantity,
+          color,
+          size,
+        }),
+      });
+
+      const data = await response.json();
+      console.log("Response:", data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
-      <Header />
       <div className="products_main">
         <div>
           <p>Listing / Product</p>
@@ -151,7 +181,7 @@ export default function ProductsDetail() {
 
             {quantity > 0 ? (
               <div>
-                <div className="button cart_btn">
+                <div onClick={handleAddToCart} className="button cart_btn">
                   <img src={cartPng} />
                   Add to cart
                 </div>

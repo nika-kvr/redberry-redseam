@@ -1,4 +1,3 @@
-import Header from "./Header";
 import "../assets/css/products.css";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -95,7 +94,6 @@ export default function Products() {
 
   return (
     <>
-      <Header />
       <div className="products_main">
         <div className="products_header">
           <div>

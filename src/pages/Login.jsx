@@ -1,4 +1,3 @@
-import Header from "./Header";
 import loginPng from "../assets/images/auth_img.png";
 import "../assets/css/login.css";
 import LoginForm from "./login pages/LoginForm";
@@ -11,7 +10,6 @@ export default function Login() {
 
   return (
     <>
-      <Header />
       <div className="main_login">
         <div>
           <img className="login_png" src={loginPng} />

@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Products from "./pages/Products";
 import ProductsDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
+import Header from "./pages/Header";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -18,6 +19,7 @@ function ProtectedRoute({ children }) {
 function App() {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route

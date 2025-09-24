@@ -67,3 +67,7 @@ span {
 p {
   color: #3e424a;
 }
+.header_p {
+  font-size: 22px;
+  font-family: "MyFont-semi-bold";
+}

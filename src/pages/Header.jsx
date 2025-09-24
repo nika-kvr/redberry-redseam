@@ -3,12 +3,17 @@ import redseamLogo from "../assets/images/logo.svg";
 import loginSvg from "../assets/images/login.svg";
 import cartLogo from "../assets/images/cart_logo.png";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import closePng from "../assets/images/close.png";
+import emptyCart from "../assets/images/emptyCart.svg";
 
 export default function Header() {
   const navigate = useNavigate();
 
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
+
+  const [showSidebar, setShowSidebar] = useState(false);
 
   return (
     <>
@@ -19,7 +24,11 @@ export default function Header() {
         </div>
 
         {user ? (
-          <div className="cart_btn_div" style={{ cursor: "pointer" }}>
+          <div
+            onClick={() => setShowSidebar(true)}
+            className="cart_btn_div"
+            style={{ cursor: "pointer" }}
+          >
             <img src={cartLogo} style={{ width: "24px" }} />
             <img className="user_img" src={user.avatar} />
             <div
@@ -34,6 +43,27 @@ export default function Header() {
           </div>
         )}
       </div>
+      {showSidebar && (
+        <div onClick={() => setShowSidebar(false)} className="sidebar-overlay">
+          <div className="sidebar" onClick={(e) => e.stopPropagation()}>
+            <div className="cart_header">
+              <p className="header_p">Shopping cart (0)</p>
+              <img onClick={() => setShowSidebar(false)} src={closePng} />
+            </div>
+            <div className="empty_cart_div">
+              <img src={emptyCart} />
+              <h2>Ooops!</h2>
+              <p>You've got nothing in your cart just yet...</p>
+              <div
+                onClick={() => setShowSidebar(false)}
+                className="button cart_btn_s"
+              >
+                Start shopping
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
