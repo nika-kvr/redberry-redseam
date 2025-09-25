@@ -38,6 +38,7 @@ export default function LoginForm({ onSwitch }) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/products");
+      window.location.reload();
     } catch (err) {
       setError(err.message);
     }
@@ -64,7 +65,7 @@ export default function LoginForm({ onSwitch }) {
             {emailPlc && (
               <div className="input_plc">
                 <p style={{ color: "#3e424a" }}>
-                  Email or username <span style={{ color: "#FF4000" }}>*</span>
+                  Email <span style={{ color: "#FF4000" }}>*</span>
                 </p>
               </div>
             )}

@@ -1,5 +1,57 @@
 .checkout_main {
   padding: 72px 100px 216px 100px;
+  min-height: 100vh;
 }
 .checkout_main > div {
+  margin-top: 42px;
+  display: flex;
+  gap: 131px;
+  flex-wrap: wrap;
+}
+.check_form {
+  flex: 1;
+  background-color: #f8f6f7;
+  border-radius: 15px;
+  padding: 72px 47px;
+}
+.check_form > p {
+  font-size: 24px;
+  font-family: "Myfont-semi-bold";
+}
+.check_cart {
+  width: 460px;
+  height: 635px;
+  background-color: rgb(255, 255, 255);
+}
+
+.checkout_form {
+  margin-top: 46px;
+  max-width: 578px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checkout_form .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.checkout_form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+.checkout_form input::placeholder {
+  color: #3e424a;
+}
+
+.check_input_plc {
+  top: 6px;
+  left: 13px;
+  position: absolute;
+  pointer-events: none;
 }

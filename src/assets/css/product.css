@@ -78,6 +78,7 @@
 }
 .dropdown {
   position: absolute;
+  max-height: 165px;
   display: flex;
   align-items: center;
   flex-direction: column;

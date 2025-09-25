@@ -35,10 +35,11 @@ form > .button {
   font-size: 20px;
   padding: 10.5px 12px;
   font-family: "MyFont-regular";
-  color: #3e424a;
+  /* color: #3e424a; */
   height: 42px;
   border-radius: 10px;
   border: 1px solid #e1dfe1;
+  background-color: #fff;
 }
 
 #pass_div {

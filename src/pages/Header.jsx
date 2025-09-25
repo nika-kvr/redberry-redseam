@@ -6,13 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import closePng from "../assets/images/close.png";
 import emptyCart from "../assets/images/emptyCart.svg";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isCheckout = location.pathname === "/checkout";
 
   const userString = localStorage.getItem("user");
-  const user = userString ? JSON.parse(userString) : null;
-  const userToken = localStorage.getItem("token");
+
+  const [user, setUser] = useState(userString ? JSON.parse(userString) : null);
+  const [userToken, setUserToken] = useState(localStorage.getItem("token"));
+
   const apiUrl = import.meta.env.VITE_API_URL;
   const [cart, setCart] = useState([]);
 
@@ -32,13 +37,14 @@ export default function Header() {
       setCart(data);
       console.log(data);
     } catch (err) {
+      console.log(`tokeni`, userToken);
       navigate("/products");
       console.log(err);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    if (userToken) fetchData();
   }, []);
 
   useEffect(() => {
@@ -48,8 +54,7 @@ export default function Header() {
     return () => window.removeEventListener("cartUpdated", handleUpdate);
   }, []);
 
-  const handleDelete = async (id) => {
-    console.log(id);
+  const handleDelete = async (id, color, size) => {
     try {
       const response = await fetch(`${apiUrl}/cart/products/${id}`, {
         method: "DELETE",
@@ -57,6 +62,10 @@ export default function Header() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken} `,
         },
+        body: JSON.stringify({
+          color,
+          size,
+        }),
       });
       fetchData();
     } catch (error) {
@@ -118,7 +127,7 @@ export default function Header() {
           </div>
         )}
       </div>
-      {showSidebar && (
+      {showSidebar && !isCheckout && (
         <div onClick={() => setShowSidebar(false)} className="sidebar-overlay">
           <div className="sidebar" onClick={(e) => e.stopPropagation()}>
             <div className="cart_header">
@@ -164,7 +173,9 @@ export default function Header() {
                         </div>
                         <p
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleDelete(`${prod.id}`)}
+                          onClick={() =>
+                            handleDelete(prod.id, prod.color, prod.size)
+                          }
                         >
                           Remove
                         </p>

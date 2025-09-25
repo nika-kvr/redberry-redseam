@@ -78,7 +78,7 @@ export default function RegisterForm({ onSwitch }) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/products");
-      console.log("Logged in:", data.user);
+      window.location.reload();
     } catch (err) {
       setError([err.message]);
     }
