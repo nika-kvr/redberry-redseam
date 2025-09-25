@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import "../assets/css/checkout.css";
 import emailSvg from "../assets/images/email.svg";
 
@@ -29,6 +29,52 @@ export default function Checkout() {
       console.log(err);
     }
   };
+  const handleDelete = async (id, color, size) => {
+    try {
+      const response = await fetch(`${apiUrl}/cart/products/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken} `,
+        },
+        body: JSON.stringify({
+          color,
+          size,
+        }),
+      });
+      fetchData();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const addQnty = async (quantity, id, color, size) => {
+    try {
+      const response = await fetch(`${apiUrl}/cart/products/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken} `,
+        },
+        body: JSON.stringify({
+          quantity,
+          color,
+          size,
+        }),
+      });
+      fetchData();
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const totalPrice = useMemo(() => {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [cart]);
+
+  useEffect(() => {
+    setItemsPrice(totalPrice);
+  }, [totalPrice]);
 
   useEffect(() => {
     if (userToken) fetchData();
@@ -112,7 +158,12 @@ export default function Checkout() {
                           }`}
                           onClick={() => {
                             if (prod.quantity !== 1)
-                              addQnty(prod.quantity - 1, prod.id);
+                              addQnty(
+                                prod.quantity - 1,
+                                prod.id,
+                                prod.color,
+                                prod.size
+                              );
                           }}
                         >
                           -
@@ -121,7 +172,12 @@ export default function Checkout() {
                         <p
                           className="qnty_add_btn"
                           onClick={() => {
-                            addQnty(prod.quantity + 1, prod.id);
+                            addQnty(
+                              prod.quantity + 1,
+                              prod.id,
+                              prod.color,
+                              prod.size
+                            );
                           }}
                         >
                           +
@@ -129,7 +185,9 @@ export default function Checkout() {
                       </div>
                       <p
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleDelete(`${prod.id}`)}
+                        onClick={() =>
+                          handleDelete(prod.id, prod.color, prod.size)
+                        }
                       >
                         Remove
                       </p>
@@ -160,7 +218,7 @@ export default function Checkout() {
                 }}
                 className="button"
               >
-                Go to checkout
+                Pay
               </div>
             </div>
           </div>

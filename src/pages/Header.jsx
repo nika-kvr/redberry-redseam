@@ -73,7 +73,7 @@ export default function Header() {
     }
   };
 
-  const addQnty = async (quantity, id) => {
+  const addQnty = async (quantity, id, color, size) => {
     try {
       const response = await fetch(`${apiUrl}/cart/products/${id}`, {
         method: "PATCH",
@@ -83,6 +83,8 @@ export default function Header() {
         },
         body: JSON.stringify({
           quantity,
+          color,
+          size,
         }),
       });
       fetchData();
@@ -109,7 +111,9 @@ export default function Header() {
 
         {user ? (
           <div
-            onClick={() => setShowSidebar(true)}
+            onClick={() => {
+              if (!isCheckout) setShowSidebar(true);
+            }}
             className="cart_btn_div"
             style={{ cursor: "pointer" }}
           >
@@ -156,7 +160,12 @@ export default function Header() {
                             }`}
                             onClick={() => {
                               if (prod.quantity !== 1)
-                                addQnty(prod.quantity - 1, prod.id);
+                                addQnty(
+                                  prod.quantity - 1,
+                                  prod.id,
+                                  prod.color,
+                                  prod.size
+                                );
                             }}
                           >
                             -
@@ -165,7 +174,12 @@ export default function Header() {
                           <p
                             className="qnty_add_btn"
                             onClick={() => {
-                              addQnty(prod.quantity + 1, prod.id);
+                              addQnty(
+                                prod.quantity - 1,
+                                prod.id,
+                                prod.color,
+                                prod.size
+                              );
                             }}
                           >
                             +
