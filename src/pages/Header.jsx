@@ -34,7 +34,6 @@ export default function Header() {
       });
       const data = await res.json();
       setCart(data);
-      console.log(data);
     } catch (err) {
       console.log(`tokeni`, userToken);
       navigate("/products");

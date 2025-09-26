@@ -44,12 +44,16 @@ export default function ProductsDetail() {
         setProdAvailable(
           data.quantity && data.available_sizes && data.available_colors
         );
-        data.available_sizes && setActivesize(data.available_sizes[0]);
         data.quantity ? setQuantity(1) : setQuantity(0);
-        console.log(data);
+        if (data.available_sizes) {
+          setActivesize(data.available_sizes[0]);
+        } else {
+          setQuantity(0);
+          setActivesize("");
+        }
       } catch (err) {
         console.log("eroria");
-        // navigate("/products");
+        navigate("/products");
         console.log(err);
       }
     };
@@ -132,7 +136,7 @@ export default function ProductsDetail() {
                 ></div>
               ))}
             </div>
-            <p style={{ marginBottom: "16px" }}>Size: {product?.size}</p>
+            <p style={{ marginBottom: "16px" }}>Size: {activeSize}</p>
             <div style={{ marginBottom: "48px" }} className="sizes_div">
               {!product?.available_sizes && (
                 <div>

@@ -46,7 +46,6 @@ export default function Checkout() {
         window.location.reload();
       }
       setCart(data);
-      console.log(data);
     } catch (err) {
       navigate("/products");
       console.log(err);
