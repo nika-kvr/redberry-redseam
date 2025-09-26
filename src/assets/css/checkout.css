@@ -42,7 +42,7 @@
 .checkout_form input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 6px;
   box-sizing: border-box;
 }
@@ -63,4 +63,62 @@
   flex: 1 1 auto;
   max-height: calc(100% - 284px);
   overflow-y: auto;
+}
+
+.check_txt_input {
+  all: unset;
+  position: relative;
+  font-size: 20px;
+  padding: 10.5px 12px;
+  font-family: "MyFont-regular";
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid #e1dfe1;
+  background-color: #fff;
+}
+.input_err {
+  border: 2px solid #ff4000;
+}
+.full_screen_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.full_screen_overlay > img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  cursor: pointer;
+}
+.centered_content {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}
+.centered_content > h1 {
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+.centered_content > p {
+  font-size: 14px;
+  margin-bottom: 74px;
+}
+.succ_div {
+  background-color: #f8f6f7;
+  width: 76px;
+  height: 76px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

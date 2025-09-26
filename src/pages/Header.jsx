@@ -22,7 +22,6 @@ export default function Header() {
   const [cart, setCart] = useState([]);
 
   const [showSidebar, setShowSidebar] = useState(false);
-
   const [itemsPrice, setItemsPrice] = useState(0);
 
   const fetchData = async () => {

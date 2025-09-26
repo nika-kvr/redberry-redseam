@@ -1,16 +1,36 @@
 import { useEffect, useState, useMemo } from "react";
 import "../assets/css/checkout.css";
 import emailSvg from "../assets/images/email.svg";
+import checkSvg from "../assets/images/check.svg";
+import closeBtn from "../assets/images/close.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const userEmail = JSON.parse(localStorage.getItem("user")).email;
   const [emailPlc, setEmailplc] = useState(false);
-  const [email, setEmail] = useState(userEmail);
 
   const [cart, setCart] = useState([]);
   const userToken = localStorage.getItem("token");
   const apiUrl = import.meta.env.VITE_API_URL;
   const [itemsPrice, setItemsPrice] = useState(0);
+
+  const [email, setEmail] = useState(userEmail);
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [address, setAddress] = useState("");
+  const [zip_code, setZipcode] = useState("");
+
+  const [nameErr, setNameErr] = useState(false);
+  const [surnameErr, setSurnameErr] = useState(false);
+  const [emailErr, setEmailErr] = useState(false);
+  const [addressErr, setAddressErr] = useState(false);
+  const [zipcodeErr, setZipcodeErr] = useState(false);
+
+  const nameValid = (value, max) => value.length < max;
+  const emailValid = (email) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const [showModal, setShowModal] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -21,10 +41,13 @@ export default function Checkout() {
         },
       });
       const data = await res.json();
+      if (data.length === 0) {
+        navigate("/products");
+        window.location.reload();
+      }
       setCart(data);
       console.log(data);
     } catch (err) {
-      console.log(`tokeni`, userToken);
       navigate("/products");
       console.log(err);
     }
@@ -80,8 +103,67 @@ export default function Checkout() {
     if (userToken) fetchData();
   }, []);
 
+  const handlePay = async () => {
+    if (
+      !nameValid(name, 1) &&
+      !nameValid(surname, 1) &&
+      !emailValid(email) &&
+      !nameValid(address, 3) &&
+      !nameValid(zip_code, 2)
+    ) {
+      try {
+        const res = await fetch(`${apiUrl}/cart/checkout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken} `,
+          },
+          body: JSON.stringify({
+            name,
+            surname,
+            email,
+            zip_code,
+            address,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || "Something went wrong");
+        }
+        setShowModal(true);
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    } else {
+      setNameErr(nameValid(name, 1));
+      setSurnameErr(nameValid(surname, 1));
+      setEmailErr(emailValid(email));
+      setAddressErr(nameValid(address, 3));
+      setZipcodeErr(nameValid(zip_code, 2));
+    }
+  };
+  const closeSucc = () => {
+    navigate("/products");
+    window.location.reload();
+  };
+
   return (
     <>
+      {showModal && (
+        <div class="full_screen_overlay">
+          <img onClick={closeSucc} src={closeBtn} />
+          <div class="centered_content">
+            <div className="succ_div">
+              <img src={checkSvg} />
+            </div>
+            <h1>Congrats!</h1>
+            <p>Your order is placed successfully!</p>
+            <div onClick={closeSucc} className="button">
+              Continue shopping
+            </div>
+          </div>
+        </div>
+      )}
       <div className="checkout_main">
         <h1>Checkout</h1>
         <div className="checkout_main_cont">
@@ -89,10 +171,22 @@ export default function Checkout() {
             <p>Order details</p>
             <div className="checkout_form">
               <div className="row">
-                <input type="text" className="txt_input" placeholder="Name" />
                 <input
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setNameErr(nameValid(e.target.value, 1));
+                  }}
                   type="text"
-                  className="txt_input"
+                  className={`check_txt_input ${nameErr ? "input_err" : ""}`}
+                  placeholder="Name"
+                />
+                <input
+                  onChange={(e) => {
+                    setSurname(e.target.value);
+                    setSurnameErr(nameValid(e.target.value, 1));
+                  }}
+                  className={`check_txt_input ${surnameErr ? "input_err" : ""}`}
+                  type="text"
                   placeholder="Surname"
                 />
               </div>
@@ -100,10 +194,11 @@ export default function Checkout() {
               <div className="input_div">
                 <input
                   value={email}
-                  className="txt_input"
+                  className={`check_txt_input ${emailErr ? "input_err" : ""}`}
                   type="email"
                   onChange={(e) => {
                     setEmail(e.target.value);
+                    setEmailErr(emailValid(e.target.value));
                     if (e.target.value.length !== 0) {
                       setEmailplc(false);
                     } else {
@@ -123,13 +218,21 @@ export default function Checkout() {
 
               <div className="row">
                 <input
+                  onChange={(e) => {
+                    setAddress(e.target.value);
+                    setAddressErr(nameValid(e.target.value, 3));
+                  }}
+                  className={`check_txt_input ${addressErr ? "input_err" : ""}`}
                   type="text"
-                  className="txt_input"
                   placeholder="Address"
                 />
                 <input
-                  type="text"
-                  className="txt_input"
+                  onChange={(e) => {
+                    setZipcode(e.target.value);
+                    setZipcodeErr(nameValid(e.target.value, 2));
+                  }}
+                  className={`check_txt_input ${zipcodeErr ? "input_err" : ""}`}
+                  type="number"
                   placeholder="Zip code"
                 />
               </div>
@@ -211,13 +314,7 @@ export default function Checkout() {
                   <h2>$ {itemsPrice + 5}</h2>
                 </div>
               </div>
-              <div
-                onClick={() => {
-                  setShowSidebar(false);
-                  navigate("/checkout");
-                }}
-                className="button"
-              >
+              <div onClick={handlePay} className="button">
                 Pay
               </div>
             </div>
