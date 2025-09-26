@@ -27,7 +27,7 @@ export default function Checkout() {
   const [addressErr, setAddressErr] = useState(false);
   const [zipcodeErr, setZipcodeErr] = useState(false);
 
-  const nameValid = (value, max) => value.length < max;
+  const nameValid = (value, max) => value.length < max || /\s/.test(value);
   const emailValid = (email) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const [showModal, setShowModal] = useState(false);

@@ -20,6 +20,7 @@ export default function ProductsDetail() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSize, setActivesize] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [prodAvailable, setProdAvailable] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -40,12 +41,15 @@ export default function ProductsDetail() {
         const res = await fetch(`${apiUrl}/products/${id}`);
         const data = await res.json();
         setProduct(data);
-        setActivesize(data.available_sizes[0]);
+        setProdAvailable(
+          data.quantity && data.available_sizes && data.available_colors
+        );
+        data.available_sizes && setActivesize(data.available_sizes[0]);
         data.quantity ? setQuantity(1) : setQuantity(0);
         console.log(data);
       } catch (err) {
         console.log("eroria");
-        navigate("/products");
+        // navigate("/products");
         console.log(err);
       }
     };
@@ -130,7 +134,12 @@ export default function ProductsDetail() {
             </div>
             <p style={{ marginBottom: "16px" }}>Size: {product?.size}</p>
             <div style={{ marginBottom: "48px" }} className="sizes_div">
-              {product?.available_sizes.map((size, index) => (
+              {!product?.available_sizes && (
+                <div>
+                  <p>sizes not available</p>
+                </div>
+              )}
+              {product?.available_sizes?.map((size, index) => (
                 <div
                   className={`prod_size ${
                     activeSize === size && "active_size"
@@ -169,6 +178,7 @@ export default function ProductsDetail() {
                 >
                   {Array.from({ length: product?.quantity }).map((_, index) => (
                     <div
+                      key={index}
                       className="dropdown_cont"
                       onClick={() => {
                         setQuantity(index + 1);
@@ -182,7 +192,7 @@ export default function ProductsDetail() {
               )}
             </div>
 
-            {quantity > 0 ? (
+            {prodAvailable ? (
               <div>
                 <div onClick={handleAddToCart} className="button cart_btn">
                   <img src={cartPng} />

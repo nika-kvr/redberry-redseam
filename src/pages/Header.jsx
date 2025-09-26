@@ -174,7 +174,7 @@ export default function Header() {
                             className="qnty_add_btn"
                             onClick={() => {
                               addQnty(
-                                prod.quantity - 1,
+                                prod.quantity + 1,
                                 prod.id,
                                 prod.color,
                                 prod.size
