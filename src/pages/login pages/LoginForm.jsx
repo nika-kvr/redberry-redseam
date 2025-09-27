@@ -9,7 +9,7 @@ export default function LoginForm({ onSwitch }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
 
   const [emailPlc, setEmailplc] = useState(true);
   const [passPlc, setPassplc] = useState(true);
@@ -32,15 +32,20 @@ export default function LoginForm({ onSwitch }) {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
+        if (data.errors) {
+          const allErrors = Object.values(data.errors).flat();
+          setError(allErrors);
+        } else if (data.message) {
+          setError([data.message]);
+        }
+        return;
       }
-
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/products");
       window.location.reload();
     } catch (err) {
-      setError(err.message);
+      setError([err.message]);
     }
   };
 
@@ -92,7 +97,12 @@ export default function LoginForm({ onSwitch }) {
             )}
             <img onClick={() => setShowPass(!showPass)} src={passSvg} />
           </div>
-          {error && <span style={{ color: "red" }}>{error}</span>}
+          {error.length > 0 &&
+            error.map((err, index) => (
+              <span key={index} style={{ color: "red" }}>
+                {err}
+              </span>
+            ))}
           <div
             style={{ marginTop: "22px" }}
             className="button"

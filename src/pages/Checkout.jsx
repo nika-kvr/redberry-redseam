@@ -168,6 +168,7 @@ export default function Checkout() {
         <div className="checkout_main_cont">
           <div className="check_form">
             <p>Order details</p>
+
             <div className="checkout_form">
               <div className="row">
                 <input
@@ -242,11 +243,13 @@ export default function Checkout() {
             <div className="check_cart_div">
               {cart?.map((prod, index) => (
                 <div key={index} className="cart_item">
-                  <img src={prod.cover_image} />
+                  <img
+                    src={prod.images[prod.available_colors.indexOf(prod.color)]}
+                  />
                   <div className="cart_detail_main">
                     <div className="cart_detail_1">
                       <h2 style={{ fontSize: "18px" }}>{prod.name}</h2>
-                      <h1>$ {prod.price}</h1>
+                      <h1>$ {prod.price * prod.quantity}</h1>
                     </div>
                     <div className="cart_detail_2">
                       <p>{prod.color}</p>

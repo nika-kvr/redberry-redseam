@@ -35,7 +35,6 @@ export default function Header() {
       const data = await res.json();
       setCart(data);
     } catch (err) {
-      console.log(`tokeni`, userToken);
       navigate("/products");
       console.log(err);
     }
@@ -140,11 +139,15 @@ export default function Header() {
               <div className="cart_div">
                 {cart?.map((prod, index) => (
                   <div key={index} className="cart_item">
-                    <img src={prod.cover_image} />
+                    <img
+                      src={
+                        prod.images[prod.available_colors.indexOf(prod.color)]
+                      }
+                    />
                     <div className="cart_detail_main">
                       <div className="cart_detail_1">
                         <h2 style={{ fontSize: "18px" }}>{prod.name}</h2>
-                        <h1>$ {prod.price}</h1>
+                        <h1>$ {prod.price * prod.quantity}</h1>
                       </div>
                       <div className="cart_detail_2">
                         <p>{prod.color}</p>
